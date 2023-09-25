@@ -35,7 +35,7 @@ int main()
 	num_2[size - 1] = 1;
 
 	int remainder = 0;
-	for (int i = 0; i < N; i++)
+	for (size_t i = 0; i < N; i++)
 	{
 		for (size_t k = 1; k < size; k++)
 		{
@@ -50,16 +50,16 @@ int main()
 
 		transfer(buff, num_2, size);
 
-		for (int j = size - 1; j >= 0; j--)
+		for (size_t j = size; j > 0; j--)
 		{
-			if (num_1[j] + num_2[j] + remainder < 10)
+			if (num_1[j - 1] + num_2[j - 1] + remainder < 10)
 			{
-				num_2[j] = num_1[j] + num_2[j] + remainder;
+				num_2[j - 1] = num_1[j - 1] + num_2[j - 1] + remainder;
 				remainder = 0;
 			}
 			else
 			{
-				num_2[j] = (num_1[j] + num_2[j] + remainder) % 10;
+				num_2[j - 1] = (num_1[j - 1] + num_2[j - 1] + remainder) % 10;
 				remainder = 1;
 			}
 		}
