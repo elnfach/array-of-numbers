@@ -1,10 +1,8 @@
 ﻿#include <iostream>
-#include <stdio.h> 
-#include <time.h> 
 
 using namespace std;
 
-void transfer(unsigned int* buffer, unsigned int* array, size_t size)
+void transfer(unsigned int* buffer, unsigned int* array, size_t& size)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -12,23 +10,25 @@ void transfer(unsigned int* buffer, unsigned int* array, size_t size)
 	}
 }
 
+unsigned int* increase_size(unsigned int* array, size_t& size)
+{
+	unsigned int* buffer = new unsigned int[size + 1] {0};
+
+	for (size_t i = size; i > 0; i--)
+	{
+		buffer[i] = array[i - 1];
+	}
+	
+	return buffer;
+}
+
 int main()
 {
-	size_t size = 0;
+	size_t size = 2;
 	unsigned int N = 0;
-	cout << "Enter size: ";
-	cin >> size;
 	cout << "Enter N: ";
 	cin >> N;
 
-
-	// c = b
-	// b = a + b
-	// a = c
-
-	// 00 - a
-	// 01 - b
-	
 	unsigned int* num_1 = new unsigned int[size] {0};
 	unsigned int* num_2 = new unsigned int[size] {0};
 	unsigned int* buff = new unsigned int[size] {0};
@@ -37,9 +37,7 @@ int main()
 	int remainder = 0;
 	for (int i = 0; i < N; i++)
 	{
-		transfer(buff, num_2, size);
-		
-		for (int k = 0; k < size; k++)
+		/*for (int k = 0; k < size; k++)
 		{
 			cout << num_1[k];
 		}
@@ -48,8 +46,10 @@ int main()
 		{
 			cout << num_2[k];
 		}
-		cout << " | ";
-		
+		cout << " | ";*/
+
+		transfer(buff, num_2, size);
+
 		for (int j = size - 1; j >= 0; j--)
 		{
 			if (num_1[j] + num_2[j] + remainder < 10)
@@ -63,18 +63,27 @@ int main()
 				remainder = 1;
 			}
 		}
+		if (num_2[0] > 0)
+		{
+			num_1 = increase_size(num_1, size);
+			num_2 = increase_size(num_2, size);
+			buff = increase_size(buff, size);
+			size += 1;
+		}
 		transfer(num_1, buff, size);
 	}
 	cout << endl;
 	cout << "Answer = ";
+
 	for (int k = 0; k < size; k++)
 	{
 		cout << num_1[k];
 	}
-	delete[] num_1;
-	delete[] num_2;
-	delete[] buff;
+
 	cout << endl;
 	cout << "runtime = " << clock() / 1000.0 << endl;
 
+	delete[] num_1;
+	delete[] num_2;
+	delete[] buff;
 }
