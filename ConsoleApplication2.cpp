@@ -37,16 +37,16 @@ int main()
 	int remainder = 0;
 	for (int i = 0; i < N; i++)
 	{
-		/*for (int k = 0; k < size; k++)
+		for (size_t k = 1; k < size; k++)
 		{
 			cout << num_1[k];
 		}
 		cout << " ";
-		for (int k = 0; k < size; k++)
+		for (size_t k = 1; k < size; k++)
 		{
 			cout << num_2[k];
 		}
-		cout << " | ";*/
+		cout << " | ";
 
 		transfer(buff, num_2, size);
 
@@ -75,7 +75,7 @@ int main()
 	cout << endl;
 	cout << "Answer = ";
 
-	for (int k = 0; k < size; k++)
+	for (size_t k = 1; k < size; k++)
 	{
 		cout << num_1[k];
 	}
