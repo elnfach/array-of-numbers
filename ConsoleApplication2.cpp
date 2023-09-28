@@ -1,18 +1,43 @@
 ﻿#include <iostream>
 
+#define _DEBUG 1
+
 using namespace std;
 
-void transfer(unsigned int* buffer, unsigned int* array, size_t& size)
+int format(unsigned char& param)
 {
-	for (int i = 0; i < size; i++)
+	int _param = 0;
+	_param = (int)param;
+	if (_param - 48 > -1 && _param - 48 < 10)
+	{
+		return _param - 48;
+	}
+	else {
+		//cout << "[ERROR]: int format(unsigned char& param, size_t& size)\n";
+		return 0;
+	}
+}
+
+unsigned char format(int param)
+{
+	if (param > 9)
+	{
+		return '0';
+	}
+	return param + 48;
+}
+
+void transfer(unsigned char* buffer, unsigned char* array, size_t& size)
+{
+	for (size_t i = 0; i < size; i++)
 	{
 		buffer[i] = array[i];
 	}
 }
 
-unsigned int* increase_size(unsigned int* array, size_t& size)
+unsigned char* increase_size(unsigned char* array, size_t& size)
 {
-	unsigned int* buffer = new unsigned int[size + 1] {0};
+	unsigned char* buffer = new unsigned char[size + 1] {0};
 
 	for (size_t i = size; i > 0; i--)
 	{
@@ -26,64 +51,128 @@ int main()
 {
 	size_t size = 2;
 	unsigned int N = 0;
+	unsigned int breakpoint = 0;
+	unsigned int k = 0;
+	bool mode = false;
+	cout << "Which wanna use mode? \n0 - Find number fibonacci\n1 - Find K-zero's in number\n";
+	cin >> mode;
+	if (mode)
+	{
+		cout << "Enter K: ";
+		cin >> k;
+	}
 	cout << "Enter N: ";
 	cin >> N;
 
-	unsigned int* num_1 = new unsigned int[size] {0};
-	unsigned int* num_2 = new unsigned int[size] {0};
-	unsigned int* buff = new unsigned int[size] {0};
-	num_2[size - 1] = 1;
+	unsigned char* a = new unsigned char[size] {48, 48};
+	unsigned char* b = new unsigned char[size] {48, 48};
+	unsigned char* c = new unsigned char[size] {48, 48};
+	unsigned char* d = new unsigned char[size] {48, 48};
 
+	b[size - 1] = 49;
+
+	int count = 0;
+	bool flag = false;
 	int remainder = 0;
 	for (size_t i = 0; i < N; i++)
 	{
-		for (size_t k = 1; k < size; k++)
+		for (size_t t = 1; t < size; t++)
 		{
-			cout << num_1[k];
+			if (mode)
+			{
+				if (a[t] == '0' && flag == false)
+				{
+					count += 1;
+					if (count == k)
+					{
+						transfer(d, a, size);
+						flag = true;
+					}
+				}
+				else
+				{
+					count = 0;
+				}
+			}
+#if _DEBUG
+			cout << a[t];
+#endif // _DEBUG
+
+			
+			
 		}
-		cout << " ";
-		for (size_t k = 1; k < size; k++)
-		{
-			cout << num_2[k];
-		}
+#if _DEBUG
 		cout << " | ";
+		for (size_t t = 1; t < size; t++)
+		{
+			cout << b[t];
+		}
 
-		transfer(buff, num_2, size);
+		cout << endl;
+#endif // _DEBUG
 
+		transfer(c, b, size);
+		count = 0;
 		for (size_t j = size; j > 0; j--)
 		{
-			if (num_1[j - 1] + num_2[j - 1] + remainder < 10)
+			if (format(a[j - 1]) + format(b[j - 1]) + remainder < 10)
 			{
-				num_2[j - 1] = num_1[j - 1] + num_2[j - 1] + remainder;
+				b[j - 1] = format(format(a[j - 1]) + format(b[j - 1]) + remainder);
 				remainder = 0;
 			}
 			else
 			{
-				num_2[j - 1] = (num_1[j - 1] + num_2[j - 1] + remainder) % 10;
+				b[j - 1] = format((format(a[j - 1]) + format(b[j - 1]) + remainder) % 10);
 				remainder = 1;
 			}
 		}
-		if (num_2[0] > 0)
+		if (flag) 
 		{
-			num_1 = increase_size(num_1, size);
-			num_2 = increase_size(num_2, size);
-			buff = increase_size(buff, size);
+			breakpoint = i;
+			break;
+		}
+
+		if (format(b[0]) > 0)
+		{
+			a = increase_size(a, size);
+			b = increase_size(b, size);
+			c = increase_size(c, size);
+			d = increase_size(d, size);
 			size += 1;
 		}
-		transfer(num_1, buff, size);
+		transfer(a, c, size);
 	}
-	cout << endl;
-	cout << "Answer = ";
 
-	for (size_t k = 1; k < size; k++)
+	if (mode)
 	{
-		cout << num_1[k];
+		cout << "\n";
+		cout << "FLAG answer = ";
+
+		for (size_t t = 1; t < size; t++)
+		{
+			cout << d[t];
+	}
+
+		cout << "\n";
+		cout << "FLAG = " << flag << endl;
+		cout << "N = " << breakpoint;
+	}
+	else
+	{
+		cout << endl;
+		cout << "Answer = ";
+
+		for (size_t t = 1; t < size; t++)
+		{
+			cout << a[t];
+		}
 	}
 
 	cout << endl;
 	cout << "runtime = " << clock() / 1000.0 << endl;
 
-	delete[] num_1;
-	delete[] num_2;
-	delete[] buff;
+	delete[] a;
+	delete[] b;
+	delete[] c;
+	delete[] d;
 }
