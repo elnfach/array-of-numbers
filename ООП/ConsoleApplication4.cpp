@@ -6,8 +6,9 @@ using namespace std;
 int main()
 {
 	INT a = 0;
-	INT b = 1;
-	INT c = 0;
+	a.screen();
+	//INT b = 1;
+	//INT c = 0;
 
 	// b = 01
 	// c = 01
@@ -16,15 +17,15 @@ int main()
 
 	int N = 0;
 
-	cin >> N;
+	//cin >> N;
 
-	for (size_t i = 0; i < N; i++)
-	{
-		c = b;
-		b = a + b;
-		//b.screen();
-		a = c;
-	}
+	//for (size_t i = 0; i < N; i++)
+	//{
+	//	c = b;
+	//	b = a + b;
+	//	//b.screen();
+	//	a = c;
+	//}
 
 	cout << "Answer = ";
 
