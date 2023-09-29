@@ -9,8 +9,9 @@ public:
 	INT(const char param);
 	INT(const char* param);
 
-	size_t getSize();
+	//size_t getSize();
 	void screen();
+	void screen(const char* param);
 
 	const INT& operator+(const INT& param);
 

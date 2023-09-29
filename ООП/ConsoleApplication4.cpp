@@ -5,27 +5,28 @@ using namespace std;
 
 int main()
 {
-	INT a = 100;
+	INT a = 0;
 	INT b = 1;
 	INT c = 0;
+
+	// b = 01
+	// c = 01
+	// b = 01 + 01
+	//
+
 	int N = 0;
 
-	a = a + b;
-
-	/*cin >> N;
+	cin >> N;
 
 	for (size_t i = 0; i < N; i++)
 	{
 		c = b;
 		b = a + b;
-		b.screen();
+		//b.screen();
 		a = c;
-	}*/
+	}
 
 	cout << "Answer = ";
 
 	a.screen();
-	
-
-	//c = a + b;
 }
