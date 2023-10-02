@@ -1,80 +1,178 @@
 ﻿#include <iostream>
-#include <stdio.h> 
-#include <time.h> 
+
+#define _DEBUG 1
 
 using namespace std;
 
-void transfer(unsigned int* buffer, unsigned int* array, size_t size)
+int format(unsigned char& param)
 {
-	for (int i = 0; i < size; i++)
+	int _param = 0;
+	_param = (int)param;
+	if (_param - 48 > -1 && _param - 48 < 10)
 	{
-		buffer[i] = array[i];
+		return _param - 48;
 	}
+	else {
+		//cout << "[ERROR]: int format(unsigned char& param, size_t& size)\n";
+		return 0;
+	}
+}
+
+unsigned char format(int param)
+{
+	if (param > 9)
+	{
+		return '0';
+	}
+	return param + 48;
+}
+
+void transfer(unsigned char* buffer, unsigned char* array, size_t& size)
+{
+	memcpy(buffer, array, size);
 }
 
 int main()
 {
-	size_t size = 0;
+	size_t size = 2;
+	size_t temp = 0;
+	size_t array_size = 2;
+	
 	unsigned int N = 0;
+	unsigned int breakpoint = 0;
+	unsigned int k = 0;
+	bool mode = false;
+	cout << "Which wanna use mode? \n0 - Find number fibonacci\n1 - Find K-zero's in number\n";
+	cin >> mode;
+	if (mode)
+	{
+		cout << "Enter K: ";
+		cin >> k;
+	}
+
 	cout << "Enter size: ";
-	cin >> size;
+	cin >> temp;
+	array_size = (array_size < 1) ? 2 : temp;
 	cout << "Enter N: ";
 	cin >> N;
 
+	unsigned char* a = new unsigned char[array_size];
+	unsigned char* b = new unsigned char[array_size];
+	unsigned char* c = new unsigned char[array_size];
+	unsigned char* d = new unsigned char[array_size];
 
-	// c = b
-	// b = a + b
-	// a = c
-
-	// 00 - a
-	// 01 - b
-	
-	unsigned int* num_1 = new unsigned int[size] {0};
-	unsigned int* num_2 = new unsigned int[size] {0};
-	unsigned int* buff = new unsigned int[size] {0};
-	num_2[size - 1] = 1;
-
-	int remainder = 0;
-	for (int i = 0; i < N; i++)
+	for (size_t i = 0; i < array_size; i++)
 	{
-		transfer(buff, num_2, size);
-		
-		for (int k = 0; k < size; k++)
+		a[i] = '0';
+		b[i] = '0';
+		c[i] = '0';
+		d[i] = '0';
+	}
+	b[array_size - 1] = 49;
+	a[array_size] = '\0';
+	b[array_size] = '\0';
+	c[array_size] = '\0';
+	d[array_size] = '\0';
+
+	int count = 0;
+	bool flag = false;
+	int remainder = 0;
+	for (size_t i = 0; i < N; i++)
+	{
+		for (size_t t = array_size - size, l = 1; l < size; t++, l++)
 		{
-			cout << num_1[k];
-		}
-		cout << " ";
-		for (int k = 0; k < size; k++)
-		{
-			cout << num_2[k];
-		}
-		cout << " | ";
-		
-		for (int j = size - 1; j >= 0; j--)
-		{
-			if (num_1[j] + num_2[j] + remainder < 10)
+			if (mode)
 			{
-				num_2[j] = num_1[j] + num_2[j] + remainder;
+				if (a[t + 1] == '0' && flag == false)
+				{
+					count += 1;
+					if (count == k)
+					{
+						transfer(d, a, size);
+						flag = true;
+					}
+				}
+				else
+				{
+					count = 0;
+				}
+			}
+#if _DEBUG
+			cout << a[t + 1];
+#endif // _DEBUG
+
+
+
+		}
+#if _DEBUG
+		cout << " | ";
+		for (size_t t = array_size - size, l = 1; l < size; t++, l++)
+		{
+			cout << b[t + 1];
+		}
+
+		cout << endl;
+#endif // _DEBUG
+
+		transfer(c, b, array_size);
+		count = 0;
+		for (size_t j = array_size, l = 0; l < size; j--, l++)
+		{
+			if (format(a[j - 1]) + format(b[j - 1]) + remainder < 10)
+			{
+				b[j - 1] = format(format(a[j - 1]) + format(b[j - 1]) + remainder);
 				remainder = 0;
 			}
 			else
 			{
-				num_2[j] = (num_1[j] + num_2[j] + remainder) % 10;
+				b[j - 1] = format((format(a[j - 1]) + format(b[j - 1]) + remainder) % 10);
 				remainder = 1;
 			}
 		}
-		transfer(num_1, buff, size);
+		
+		if (flag)
+		{
+			breakpoint = i;
+			break;
+		}
+
+		if (format(b[array_size - size]) > 0)
+		{
+			size += 1;
+		}
+		transfer(a, c, array_size);
 	}
-	cout << endl;
-	cout << "Answer = ";
-	for (int k = 0; k < size; k++)
+
+	if (mode)
 	{
-		cout << num_1[k];
+		cout << "\n";
+		cout << "FLAG answer = ";
+
+		for (size_t t = array_size - size, l = 1; l < size; t++, l++)
+		{
+			cout << d[t + 1];
+		}
+
+		cout << "\n";
+		cout << "FLAG = " << flag << endl;
+		cout << "N = " << breakpoint;
 	}
-	delete[] num_1;
-	delete[] num_2;
-	delete[] buff;
+	else
+	{
+		cout << endl;
+		cout << "Answer = ";
+
+		for (size_t t = array_size - size, l = 1; l < size; t++, l++)
+		{
+			cout << a[t + 1];
+		}
+	}
+
 	cout << endl;
 	cout << "runtime = " << clock() / 1000.0 << endl;
 
+	delete[] a;
+	delete[] b;
+	delete[] c;
+	delete[] d;
 }
