@@ -43,7 +43,7 @@ unsigned char* increase_size(unsigned char* array, size_t& size)
 	{
 		buffer[i] = array[i - 1];
 	}
-	
+	delete[] array;
 	return buffer;
 }
 
