@@ -3,7 +3,7 @@
 INT::INT()
 {
 	m_size = 2;
-	m_container = new unsigned char[m_size] {48, 48};
+	m_container = new unsigned char[m_size] {48};
 }
 
 //INT::INT(INT& param)
