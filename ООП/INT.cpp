@@ -76,8 +76,7 @@ void INT::screen(const char* param)
 
 int INT::format(unsigned char& param)
 {
-	int _param = 0;
-	_param = param;
+	int _param = param;
 	if (_param - 48 > -1 && _param - 48 < 10)
 	{
 		return _param - 48;
