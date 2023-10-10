@@ -21,9 +21,9 @@ public:
 	INT operator+(const INT& param);
 
 	void operator=(const INT& param);
-	INT& operator=(const int param);
-	INT& operator=(const char param);
-	INT& operator=(const char* param);
+	void operator=(const int param);
+	void operator=(const char param);
+	void operator=(const char* param);
 private:
 	size_t m_size;
 	size_t m_array_size = 1000000;
