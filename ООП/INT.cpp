@@ -198,7 +198,7 @@ void INT::operator=(const INT& param)
 	memcpy(m_container, param.m_container, m_array_size);
 }
 
-INT& INT::operator=(const int param)
+void INT::operator=(const int param)
 {
 	int _param = param;
 	m_size = 2;
@@ -225,10 +225,9 @@ INT& INT::operator=(const int param)
 			m_container = buffer;
 		}
 	}
-	return *this;
 }
 
-INT& INT::operator=(const char param)
+void INT::operator=(const char param)
 {
 	char _param = param;
 	m_size = 2;
@@ -255,10 +254,9 @@ INT& INT::operator=(const char param)
 	{
 		std::cout << e.what() << std::endl;
 	}
-	return *this;
 }
 
-INT& INT::operator=(const char* param)
+void INT::operator=(const char* param)
 {
 	const char* _param = param;
 	int j = 2;
@@ -297,5 +295,4 @@ INT& INT::operator=(const char* param)
 	{
 		std::cout << e.what() << std::endl;
 	}
-	return *this;
 }
