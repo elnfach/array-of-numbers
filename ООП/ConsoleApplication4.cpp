@@ -5,19 +5,13 @@ using namespace std;
 
 int main()
 {
-	INT a = 0;
-	a.screen();
-	//INT b = 1;
-	//INT c = 0;
+	INT a = 300;
 
-	// b = 01
-	// c = 01
-	// b = 01 + 01
-	//
+	a.screen();
 
 	int N = 0;
 
-	//cin >> N;
+	cin >> N;
 
 	//for (size_t i = 0; i < N; i++)
 	//{
@@ -26,8 +20,4 @@ int main()
 	//	//b.screen();
 	//	a = c;
 	//}
-
-	cout << "Answer = ";
-
-	a.screen();
 }

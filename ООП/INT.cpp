@@ -1,35 +1,24 @@
 #include <iostream>
 #include "headers/INT.h"
+
 INT::INT()
 {
 	m_size = 2;
-	m_container = new unsigned char[m_size] {48};
+	m_container = new unsigned char[m_array_size] ();
+	for (size_t i = 0; i < m_array_size; i++)
+	{
+		m_container[i] = '0';
+	}
 }
-
-//INT::INT(INT& param)
-//{
-//	m_size = param.m_size;
-//	m_container = new unsigned char[m_size] {48};
-//	for (size_t i = m_size; i > 0; i--)
-//	{
-//		m_container[i - 1] = param.m_container[i - 1];
-//	}
-//}
 
 INT::INT(INT* param)
 {
-	INT _param = param;
-	m_size = _param.m_size;
-	m_container = new unsigned char[m_size];
+	m_size = param->m_size;
+	unsigned char* buffer = new unsigned char[m_array_size] ();
 
-	for (size_t i = 0; i < m_size; i++)
-	{
-		m_container[i] = 48;
-	}
-	for (size_t i = m_size; i > 0; i--)
-	{
-		m_container[i - 1] = _param.m_container[i - 1];
-	}
+	memcpy(buffer, param->m_container, m_array_size);
+	delete[] m_container;
+	m_container = buffer;
 }
 
 INT::INT(const int param)
@@ -40,7 +29,6 @@ INT::INT(const int param)
 	size_t size = 1;
 
 	m_size = 2;
-	m_container = new unsigned char[m_size];
 
 	while (buff > 9)
 	{
@@ -49,39 +37,22 @@ INT::INT(const int param)
 		buff /= 10;
 	}
 
-	j = size;
+	unsigned char* buffer = new unsigned char[m_array_size] ();
 
-	for (size_t i = 0; i < m_size + 3; i++)
-	{
-		m_container[i] = 48;
-		std::cout << m_container[i];
-
-	}
-
-	std::cout << std::endl;
-
-	/*unsigned char* buffer = new unsigned char[size + 1];
-
-	for (size_t i = 0; i < size + 1; i++)
+	for (size_t i = 0; i < m_array_size; i++)
 	{
 		buffer[i] = 48;
-		std::cout << buffer[i];
 	}
-	std::cout << std::endl;
-	
-	for (size_t i = m_size; i > 0; i--)
-	{
-		buffer[j] = m_container[i - 1];
-		j--;
-	}
+
+	delete[] m_container;
 	m_size = size + 1;
 	m_container = buffer;
 
-	for (size_t i = m_size; i > 0; i--)
+	for (size_t i = m_array_size, l = 1; l < m_size; i--, l++)
 	{
 		m_container[i - 1] = (_param % 10) + 48;
 		_param /= 10;
-	}*/
+	}
 }
 
 INT::INT(const char param)
@@ -136,12 +107,18 @@ INT::INT(const char* param)
 		}
 		m_size = size + 1;
 		m_container = buffer;
+		delete[] buffer;
 	}
 
 	catch (const std::exception& e)
 	{
 		std::cout << e.what() << std::endl;
 	}
+}
+
+INT::~INT()
+{
+	delete[] m_container;
 }
 
 //size_t INT::getSize()
@@ -151,9 +128,9 @@ INT::INT(const char* param)
 
 void INT::screen()
 {
-	for (size_t i = 0; i < m_size + 4; i++)
+	for (size_t i = m_array_size - m_size, l = 1; l < m_size; i++, l++)
 	{
-		std::cout << m_container[i] - 48;
+		std::cout << m_container[i + 1];
 	}
 	std::cout << std::endl;
 }
@@ -164,9 +141,9 @@ void INT::screen(const char* param)
 	{
 		std::cout << param[i];
 	}
-	for (size_t i = 0; i < m_size; i++)
+	for (size_t i = m_array_size - m_size, l = 1; l < m_size; i++, l++)
 	{
-		std::cout << m_container[i];
+		std::cout << m_container[i + 1];
 	}
 	std::cout << std::endl;
 }
@@ -192,9 +169,7 @@ const INT& INT::operator+(const INT& param)
 		delete[] m_container;
 		size = m_size;
 	}
-	screen("a = ");
-	_param.screen("b = ");
-
+	
 	int remainder = 0;
 
 	for (size_t i = size; i > 0; i--)
@@ -212,22 +187,15 @@ const INT& INT::operator+(const INT& param)
 	}
 	if (m_container[0] > 0)
 	{
-		unsigned char* buffer = new unsigned char[m_size + 1] {0};
+		unsigned char* buffer = new unsigned char[m_size + 1];
 		for (size_t i = m_size; i > 0; i--)
 		{
 			buffer[i] = 48;
-		}
-		for (size_t i = m_size; i > 0; i--)
-		{
 			buffer[i] = m_container[i - 1];
 		}
 		m_size += 1;
 		m_container = buffer;
-
 	}
-	screen("b = ");
-	_param.screen("a = ");
-	std::cout << std::endl;
 
 	return *this;
 }
@@ -238,15 +206,7 @@ INT& INT::operator=(const INT& param)
 	m_size = _param.m_size;
 	m_container = new unsigned char[m_size];
 
-	for (size_t i = 0; i < m_size; i++)
-	{
-		m_container[i] = 48;
-	}
-
-	for (size_t i = m_size; i > 0; i--)
-	{
-		m_container[i - 1] = _param.m_container[i - 1];
-	}
+	memcpy(m_container, _param.m_container, m_size);
 	return *this;
 }
 
