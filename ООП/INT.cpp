@@ -115,7 +115,6 @@ INT INT::operator+(const INT& param)
 			remainder = 1;
 		}
 	}
-	std::cout << "\n";
 	if (format(temp.m_container[m_array_size - temp.m_size]) > 0)
 	{
 		temp.m_size += 1;
