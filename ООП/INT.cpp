@@ -32,25 +32,19 @@ INT::INT(const int param)
 
 	while (buff > 9)
 	{
-		std::cout << "YES" << std::endl;
 		size += 1;
 		buff /= 10;
 	}
 
-	unsigned char* buffer = new unsigned char[m_array_size] ();
+	delete[] this->m_container;
+	this->m_container = new unsigned char[m_array_size] ();
 
-	for (size_t i = 0; i < m_array_size; i++)
-	{
-		buffer[i] = 48;
-	}
-
-	delete[] m_container;
 	m_size = size + 1;
-	m_container = buffer;
+	m_container = this->m_container;
 
 	for (size_t i = m_array_size, l = 1; l < m_size; i--, l++)
 	{
-		m_container[i - 1] = (_param % 10) + 48;
+		this->m_container[i - 1] = (_param % 10) + 48;
 		_param /= 10;
 	}
 }
@@ -132,7 +126,6 @@ void INT::screen()
 	{
 		std::cout << m_container[i + 1];
 	}
-	std::cout << std::endl;
 }
 
 void INT::screen(const char* param)
@@ -145,69 +138,64 @@ void INT::screen(const char* param)
 	{
 		std::cout << m_container[i + 1];
 	}
-	std::cout << std::endl;
 }
 
-const INT& INT::operator+(const INT& param)
+int INT::format(unsigned char& param)
 {
-	INT _param = param;
-	int size = _param.m_size;
-	int j = 0;
-
-	if (m_size < _param.m_size)
+	int _param = 0;
+	_param = param;
+	if (_param - 48 > -1 && _param - 48 < 10)
 	{
-		unsigned char* buffer = new unsigned char[m_size];
-
-		for (size_t i = 0; i < m_size; i++)
-		{
-			buffer[i] = 48;
-		}
-
-		buffer = m_container;
-		m_container = _param.m_container;
-		_param.m_container = buffer;
-		delete[] m_container;
-		size = m_size;
+		return _param - 48;
 	}
-	
+	else {
+		return 0;
+	}
+}
+
+unsigned char INT::format(int param)
+{
+	if (param > 9)
+	{
+		return '0';
+	}
+	return param + 48;
+}
+
+INT INT::operator+(const INT& param)
+{
+	INT temp;
+	size_t size = (param.m_size > m_size) ? param.m_size : m_size;
+	temp.m_size = size;
 	int remainder = 0;
 
-	for (size_t i = size; i > 0; i--)
+	for (size_t i = m_array_size, l = 0; l < size; i--, l++)
 	{
-		if (m_container[i - 1] + _param.m_container[i - 1] + remainder - 96 < 10)
+		if (format(m_container[i - 1]) + format(param.m_container[i - 1]) + remainder < 10)
 		{
-			m_container[i - 1] = (m_container[i - 1] + _param.m_container[i - 1] + remainder - 96) + 48;
+			temp.m_container[i - 1] = format(format(m_container[i - 1]) + format(param.m_container[i - 1]) + remainder);
 			remainder = 0;
 		}
 		else
 		{
-			m_container[i - 1] = ((m_container[i - 1] + _param.m_container[i - 1] + remainder - 96) % 10) + 48;
+			temp.m_container[i - 1] = format((format(m_container[i - 1]) + format(param.m_container[i - 1]) + remainder) % 10);
 			remainder = 1;
 		}
 	}
-	if (m_container[0] > 0)
+	std::cout << "\n";
+	if (format(temp.m_container[m_array_size - size]) > 0)
 	{
-		unsigned char* buffer = new unsigned char[m_size + 1];
-		for (size_t i = m_size; i > 0; i--)
-		{
-			buffer[i] = 48;
-			buffer[i] = m_container[i - 1];
-		}
-		m_size += 1;
-		m_container = buffer;
+		temp.m_size += 1;
 	}
-
-	return *this;
+	return temp;
 }
 
-INT& INT::operator=(const INT& param)
+void INT::operator=(const INT& param)
 {
-	INT _param = param;
-	m_size = _param.m_size;
-	m_container = new unsigned char[m_size];
-
-	memcpy(m_container, _param.m_container, m_size);
-	return *this;
+	this->m_size = param.m_size;
+	delete[] this->m_container;
+	this->m_container = new unsigned char[m_array_size];
+	memcpy(m_container, param.m_container, m_array_size);
 }
 
 INT& INT::operator=(const int param)

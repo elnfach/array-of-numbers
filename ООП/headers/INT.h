@@ -15,9 +15,12 @@ public:
 	void screen();
 	void screen(const char* param);
 
-	const INT& operator+(const INT& param);
+	int format(unsigned char& param);
+	unsigned char format(int param);
 
-	INT& operator=(const INT& param);
+	INT operator+(const INT& param);
+
+	void operator=(const INT& param);
 	INT& operator=(const int param);
 	INT& operator=(const char param);
 	INT& operator=(const char* param);
