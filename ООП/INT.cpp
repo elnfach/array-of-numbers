@@ -54,11 +54,6 @@ INT::~INT()
 	delete[] m_container;
 }
 
-//size_t INT::getSize()
-//{
-//	return m_size;
-//}
-
 void INT::screen()
 {
 	for (size_t i = m_array_size - m_size, l = 1; l < m_size; i++, l++)
@@ -104,11 +99,10 @@ unsigned char INT::format(int param)
 INT INT::operator+(const INT& param)
 {
 	INT temp;
-	size_t size = (param.m_size > m_size) ? param.m_size : m_size;
-	temp.m_size = size;
+	temp.m_size = (param.m_size > m_size) ? param.m_size : m_size;
 	int remainder = 0;
 
-	for (size_t i = m_array_size, l = 0; l < size; i--, l++)
+	for (size_t i = m_array_size, l = 0; l < temp.m_size; i--, l++)
 	{
 		if (format(m_container[i - 1]) + format(param.m_container[i - 1]) + remainder < 10)
 		{
@@ -122,7 +116,7 @@ INT INT::operator+(const INT& param)
 		}
 	}
 	std::cout << "\n";
-	if (format(temp.m_container[m_array_size - size]) > 0)
+	if (format(temp.m_container[m_array_size - temp.m_size]) > 0)
 	{
 		temp.m_size += 1;
 	}
