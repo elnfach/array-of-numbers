@@ -2,112 +2,68 @@
 
 using namespace std;
 
-int format(unsigned char& param)
-{
-	int _param = 0;
-	_param = (int)param;
-	if (_param - 48 > -1 && _param - 48 < 10)
-	{
-		return _param - 48;
-	}
-	else {
-		return 0;
-	}
-}
-
-unsigned char format(int param)
-{
-	if (param > 9)
-	{
-		return '0';
-	}
-	return param + 48;
-}
-
-void transfer(unsigned char* buffer, unsigned char* array, int& size)
-{
-	memcpy(buffer, array, size);
-}
-
 int main()
 {
-	setlocale(0, "");
 	time_t start, end;
 	time(&start);
 
-	int progress = 100;
-	int size = 2;
-	int array_size = 1000000;
+	int array_size = 10000000000;
 
-	unsigned int N = 2;
 	unsigned int breakpoint = 0;
 	unsigned int k = 0;
-	bool mode = false;
 	cout << "Enter K: ";
 	cin >> k;
 	cout << "[ ";
 
 	unsigned char* a = new unsigned char[array_size] ();
 	unsigned char* b = new unsigned char[array_size] ();
-	unsigned char* c = new unsigned char[array_size] ();
-	unsigned char* d = new unsigned char[array_size] ();
-
-	for (int i = 0; i < array_size; i++)
-	{
-		a[i] = '0';
-		b[i] = '0';
-		c[i] = '0';
-		d[i] = '0';
-	}
-	b[array_size - 1] = 49;
-
+	unsigned char* ptr_border = &b[array_size - 2];
+	b[array_size - 1] = 1;
+	
 	int count = 0;
 	int count_buf = 0;
-	bool flag = false;
+	int temp = 0;
 	int remainder = 0;
-	for (int i = 0; i < N; i++)
+	bool flag = false;
+	for (int i = 0;; i++)
 	{
-		transfer(c, b, array_size);
 		count = 0;
-		for (int j = array_size, l = 0; l < size; j--, l++)
+		for (int j = array_size; j > 0; j--)
 		{
-			if (format(a[j - 1]) + format(b[j - 1]) + remainder < 10)
+			temp = a[j - 1];
+			a[j - 1] = b[j - 1];
+
+			if (temp + (int)b[j - 1] + remainder < 10)
 			{
-				b[j - 1] = format(format(a[j - 1]) + format(b[j - 1]) + remainder);
+				b[j - 1] = temp + (int)b[j - 1] + remainder;
 				remainder = 0;
 			}
 			else
 			{
-				b[j - 1] = format((format(a[j - 1]) + format(b[j - 1]) + remainder) % 10);
+				b[j - 1] = (temp + (int)b[j - 1] + remainder) % 10;
 				remainder = 1;
 			}
-		}
 
-		if (flag)
-		{
-			breakpoint = i + 1;
-			break;
-		}
+			// Граница числа
+			if (&b[j - 1] == ptr_border)
+			{
+				if ((int)b[j - 1] > 0)
+				{
+					ptr_border = &b[j - 2];
+				}
+				break;
+			}
 
-		if (format(b[array_size - size]) > 0)
-		{
-			size += 1;
-		}
-		transfer(a, c, array_size);
-
-		for (int t = array_size - size, l = 1; l < size; t++, l++)
-		{
-			if (b[t + 1] == '0' && flag == false)
+			if (b[j - 1] == 0)
 			{
 				count += 1;
 				if (count > count_buf)
 				{
 					count_buf = count;
-					cout << "[" << count_buf << "]";
+					cout << "[" << count_buf << " - " << i + 1 << "]";
 				}
 				if (count == k)
 				{
-					transfer(d, b, array_size);
 					flag = true;
 				}
 			}
@@ -117,26 +73,38 @@ int main()
 			}
 		}
 
-		N++;
+		if (flag)
+		{
+			breakpoint = i + 1;
+			break;
+		}
 	}
 	cout << " ]" << endl;
 
-	cout << "\n";
+	cout << endl;
 	cout << "FLAG answer = ";
 
-	for (int t = array_size - size, l = 1; l < size; t++, l++)
+	int start_point = 0;
+	for (int j = array_size; j > 0; j--)
 	{
-		cout << d[t + 1];
+		if (&b[j - 1] == ptr_border)
+		{
+			start_point = j;
+			break;
+		}
 	}
-
-	cout << "\n";
+	for (int j = start_point; j < array_size; j++)
+	{
+		cout << (int)b[j];
+	}
+	
+	cout << endl;
 	cout << "FLAG = " << flag << endl;
-	cout << "N = " << breakpoint;
+	cout << "N = " << breakpoint << endl;
 
 	delete[] a;
 	delete[] b;
-	delete[] c;
-	delete[] d;
+	delete ptr_border;
 
 	time(&end);
 	double seconds = difftime(end, start);
