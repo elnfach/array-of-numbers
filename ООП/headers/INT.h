@@ -1,4 +1,5 @@
 #ifndef HEADERS_INT_H
+#define HEADERS_INT_H
 
 class INT
 {
