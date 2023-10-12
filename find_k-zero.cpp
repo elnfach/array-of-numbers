@@ -15,11 +15,11 @@ int main()
 	cin >> k;
 	cout << "[ ";
 
-	unsigned char* a = new unsigned char[array_size] ();
-	unsigned char* b = new unsigned char[array_size] ();
+	unsigned char* a = new unsigned char[array_size]();
+	unsigned char* b = new unsigned char[array_size]();
 	unsigned char* ptr_border = &b[array_size - 2];
 	b[array_size - 1] = 1;
-	
+
 	int count = 0;
 	int count_buf = 0;
 	int temp = 0;
@@ -109,14 +109,13 @@ int main()
 	{
 		cout << (int)b[j];
 	}
-	
+
 	cout << endl;
 	cout << "FLAG = " << flag << endl;
 	cout << "N = " << breakpoint << endl;
 
 	delete[] a;
 	delete[] b;
-	delete ptr_border;
 
 	time(&end);
 	double seconds = difftime(end, start);
