@@ -17,7 +17,7 @@ int main()
 
 	unsigned char* a = new unsigned char[array_size]();
 	unsigned char* b = new unsigned char[array_size]();
-	unsigned char* ptr_border = &b[array_size - 2];
+	unsigned int start_number = array_size - 1;
 	b[array_size - 1] = 1;
 
 	int count = 0;
@@ -27,46 +27,33 @@ int main()
 	bool flag = false;
 	for (int i = 0;; i++)
 	{
-		count = 0;
-		for (int j = array_size; j > 0; j--)
+		for (int j = array_size - 1; j >= start_number; j--)
 		{
-			temp = a[j - 1];
-			a[j - 1] = b[j - 1];
+			temp = a[j];
+			a[j] = b[j];
 
-			if (temp + (int)b[j - 1] + remainder < 10)
+			if (temp + b[j] + remainder < 10)
 			{
-				b[j - 1] = temp + (int)b[j - 1] + remainder;
+				b[j] = temp + b[j] + remainder;
 				remainder = 0;
 			}
 			else
 			{
-				b[j - 1] = (temp + (int)b[j - 1] + remainder) % 10;
+				b[j] = (temp + b[j] + remainder) % 10;
 				remainder = 1;
-			}
-
-			//
-			// Граница числа
-			// 
-			// Требуется для экономии время при расчете.
-			// В случае отсутствия условия программа будет
-			// складывать нули до нулевого индекса, что не допустимо
-			//
-			if (&b[j - 1] == ptr_border)
-			{
-				if ((int)b[j - 1] > 0)
+				if (start_number == j)
 				{
-					ptr_border = &b[j - 2];
+					start_number = j - 1;
 				}
-				break;
 			}
 
 			// 
 			// Система подсчета нулей
 			// 
 			// Если найдется требуемое число нулей, то
-			// цикл for остановит свою работу
+			// внешний цикл for остановит свою работу
 			// 
-			if (b[j - 1] == 0)
+			if (b[j] == 0)
 			{
 				count += 1;
 				if (count > count_buf)
@@ -96,16 +83,7 @@ int main()
 	cout << endl;
 	cout << "FLAG answer = ";
 
-	int start_point = 0;
-	for (int j = array_size; j > 0; j--)
-	{
-		if (&b[j - 1] == ptr_border)
-		{
-			start_point = j;
-			break;
-		}
-	}
-	for (int j = start_point; j < array_size; j++)
+	for (int j = start_number; j < array_size; j++)
 	{
 		cout << (int)b[j];
 	}
