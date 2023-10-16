@@ -4,13 +4,13 @@
 INT::INT()
 {
 	m_size = 2;
-	m_container = new unsigned char[m_array_size] ();
+	m_container = new unsigned char[m_array_size]();
 }
 
 INT::INT(INT* param)
 {
 	m_size = param->m_size;
-	unsigned char* buffer = new unsigned char[m_array_size] ();
+	unsigned char* buffer = new unsigned char[m_array_size]();
 
 	memcpy(buffer, param->m_container, m_array_size);
 	delete[] m_container;
@@ -33,7 +33,7 @@ INT::INT(const int param)
 	}
 
 	delete[] this->m_container;
-	this->m_container = new unsigned char[m_array_size] ();
+	this->m_container = new unsigned char[m_array_size]();
 
 	m_size = size + 1;
 	m_container = this->m_container;
@@ -54,7 +54,7 @@ void INT::screen()
 {
 	for (size_t i = m_array_size - m_size, l = 1; l < m_size; i++, l++)
 	{
-		std::cout << m_container[i + 1];
+		std::cout << (int)m_container[i + 1];
 	}
 }
 
@@ -66,7 +66,7 @@ void INT::screen(const char* param)
 	}
 	for (size_t i = m_array_size - m_size, l = 1; l < m_size; i++, l++)
 	{
-		std::cout << m_container[i + 1];
+		std::cout << (int)m_container[i + 1];
 	}
 }
 
@@ -75,17 +75,18 @@ INT INT::operator+(const INT& param)
 	INT temp;
 	temp.m_size = (param.m_size > m_size) ? param.m_size : m_size;
 	int remainder = 0;
-
+	int padding;
 	for (size_t i = m_array_size - 1, l = 0; l < temp.m_size; i--, l++)
 	{
-		if (m_container[i] + param.m_container[i]) + remainder < 10)
+		padding = m_container[i] + param.m_container[i] + remainder;
+		if (padding < 10)
 		{
-			temp.m_container[i] = m_container[i] + param.m_container[i] + remainder;
+			temp.m_container[i] = padding;
 			remainder = 0;
 		}
 		else
 		{
-			temp.m_container[i] = (m_container[i] + param.m_container[i] + remainder) % 10;
+			temp.m_container[i] = (padding) % 10;
 			remainder = 1;
 		}
 	}
@@ -98,8 +99,8 @@ INT INT::operator+(const INT& param)
 
 void INT::operator=(const INT& param)
 {
-	this->m_size = param.m_size;
-	delete[] this->m_container;
-	this->m_container = new unsigned char[m_array_size];
+m_size = param.m_size;
+	delete[]m_container;
+	m_container = new unsigned char[m_array_size];
 	memcpy(m_container, param.m_container, m_array_size);
 }
