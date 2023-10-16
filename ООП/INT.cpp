@@ -74,7 +74,6 @@ INT INT::operator+(const INT& param)
 {
 	INT temp;
 	temp.m_size = (param.m_size > m_size) ? m_size : param.m_size;
-	//std::cout << "M_SIZE" << m_size << std::endl;
 	int remainder = 0;
 	int padding;
 	for (int i = m_array_size - 1; i >= temp.m_size; i--)
