@@ -5,10 +5,6 @@ INT::INT()
 {
 	m_size = 2;
 	m_container = new unsigned char[m_array_size] ();
-	for (size_t i = 0; i < m_array_size; i++)
-	{
-		m_container[i] = '0';
-	}
 }
 
 INT::INT(INT* param)
@@ -44,7 +40,7 @@ INT::INT(const int param)
 
 	for (size_t i = m_array_size, l = 1; l < m_size; i--, l++)
 	{
-		this->m_container[i - 1] = (_param % 10) + 48;
+		this->m_container[i - 1] = _param % 10;
 		_param /= 10;
 	}
 }
