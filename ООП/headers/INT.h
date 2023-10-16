@@ -10,7 +10,6 @@ public:
 
 	~INT();
 
-	//size_t getSize();
 	void screen();
 	void screen(const char* param);
 
@@ -18,8 +17,8 @@ public:
 
 	void operator=(const INT& param);
 private:
-	size_t m_size;
-	size_t m_array_size = 1000000;
+	int m_size;
+	int m_array_size = 1000000000;
 	unsigned char* m_container;
 };
 
