@@ -74,43 +74,22 @@ void INT::screen(const char* param)
 	}
 }
 
-int INT::format(unsigned char& param)
-{
-	int _param = param;
-	if (_param - 48 > -1 && _param - 48 < 10)
-	{
-		return _param - 48;
-	}
-	else {
-		return 0;
-	}
-}
-
-unsigned char INT::format(int param)
-{
-	if (param > 9)
-	{
-		return '0';
-	}
-	return param + 48;
-}
-
 INT INT::operator+(const INT& param)
 {
 	INT temp;
 	temp.m_size = (param.m_size > m_size) ? param.m_size : m_size;
 	int remainder = 0;
 
-	for (size_t i = m_array_size, l = 0; l < temp.m_size; i--, l++)
+	for (size_t i = m_array_size - 1, l = 0; l < temp.m_size; i--, l++)
 	{
-		if (format(m_container[i - 1]) + format(param.m_container[i - 1]) + remainder < 10)
+		if (m_container[i] + param.m_container[i]) + remainder < 10)
 		{
-			temp.m_container[i - 1] = format(format(m_container[i - 1]) + format(param.m_container[i - 1]) + remainder);
+			temp.m_container[i] = format(format(m_container[i]) + format(param.m_container[i]) + remainder);
 			remainder = 0;
 		}
 		else
 		{
-			temp.m_container[i - 1] = format((format(m_container[i - 1]) + format(param.m_container[i - 1]) + remainder) % 10);
+			temp.m_container[i] = format((format(m_container[i]) + format(param.m_container[i]) + remainder) % 10);
 			remainder = 1;
 		}
 	}
