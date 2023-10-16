@@ -84,16 +84,16 @@ INT INT::operator+(const INT& param)
 	{
 		if (m_container[i] + param.m_container[i]) + remainder < 10)
 		{
-			temp.m_container[i] = format(format(m_container[i]) + format(param.m_container[i]) + remainder);
+			temp.m_container[i] = m_container[i] + param.m_container[i] + remainder;
 			remainder = 0;
 		}
 		else
 		{
-			temp.m_container[i] = format((format(m_container[i]) + format(param.m_container[i]) + remainder) % 10);
+			temp.m_container[i] = (m_container[i] + param.m_container[i] + remainder) % 10;
 			remainder = 1;
 		}
 	}
-	if (format(temp.m_container[m_array_size - temp.m_size]) > 0)
+	if (temp.m_container[m_array_size - temp.m_size] > 0)
 	{
 		temp.m_size += 1;
 	}
