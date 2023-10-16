@@ -3,26 +3,25 @@
 
 INT::INT()
 {
-	m_size = 2;
+	m_size = m_array_size - 1;
 	m_container = new unsigned char[m_array_size]();
 }
 
 INT::INT(INT* param)
 {
 	m_size = param->m_size;
-	unsigned char* buffer = new unsigned char[m_array_size]();
 
-	memcpy(buffer, param->m_container, m_array_size);
 	delete[] m_container;
-	m_container = buffer;
+	m_container = new unsigned char[m_array_size]();
+
+	memcpy(m_container, param->m_container, m_array_size);
 }
 
 INT::INT(const int param)
 {
 	int _param = param;
 	int buff = _param;
-	int j = 0;
-	size_t size = 1;
+	int size = 1;
 
 	m_size = 2;
 
@@ -33,14 +32,14 @@ INT::INT(const int param)
 	}
 
 	delete[] this->m_container;
-	this->m_container = new unsigned char[m_array_size]();
+	m_container = new unsigned char[m_array_size]();
 
-	m_size = size + 1;
+	m_size = m_array_size - size;
 	m_container = this->m_container;
 
-	for (size_t i = m_array_size, l = 1; l < m_size; i--, l++)
+	for (int i = m_array_size - 1; i >= m_size; i--)
 	{
-		this->m_container[i - 1] = _param % 10;
+		m_container[i] = _param % 10;
 		_param /= 10;
 	}
 }
@@ -52,31 +51,33 @@ INT::~INT()
 
 void INT::screen()
 {
-	for (size_t i = m_array_size - m_size, l = 1; l < m_size; i++, l++)
+	for (int i = m_size; i < m_array_size; i++)
 	{
-		std::cout << (int)m_container[i + 1];
+		std::cout << (int)m_container[i];
 	}
 }
 
 void INT::screen(const char* param)
 {
-	for (size_t i = 0; i < strlen(param); i++)
+	for (int i = 0; i < strlen(param); i++)
 	{
 		std::cout << param[i];
 	}
-	for (size_t i = m_array_size - m_size, l = 1; l < m_size; i++, l++)
+	for (int i = m_size; i < m_array_size; i++)
 	{
-		std::cout << (int)m_container[i + 1];
+		std::cout << (int)m_container[i];
 	}
+	std::cout << std::endl;
 }
 
 INT INT::operator+(const INT& param)
 {
 	INT temp;
-	temp.m_size = (param.m_size > m_size) ? param.m_size : m_size;
+	temp.m_size = (param.m_size > m_size) ? m_size : param.m_size;
+	//std::cout << "M_SIZE" << m_size << std::endl;
 	int remainder = 0;
 	int padding;
-	for (size_t i = m_array_size - 1, l = 0; l < temp.m_size; i--, l++)
+	for (int i = m_array_size - 1; i >= temp.m_size; i--)
 	{
 		padding = m_container[i] + param.m_container[i] + remainder;
 		if (padding < 10)
@@ -86,20 +87,20 @@ INT INT::operator+(const INT& param)
 		}
 		else
 		{
-			temp.m_container[i] = (padding) % 10;
+			temp.m_container[i] = padding % 10;
 			remainder = 1;
+			if (temp.m_size == i)
+			{
+				temp.m_size = i - 1;
+			}
 		}
-	}
-	if (temp.m_container[m_array_size - temp.m_size] > 0)
-	{
-		temp.m_size += 1;
 	}
 	return temp;
 }
 
 void INT::operator=(const INT& param)
 {
-m_size = param.m_size;
+	m_size = param.m_size;
 	delete[]m_container;
 	m_container = new unsigned char[m_array_size];
 	memcpy(m_container, param.m_container, m_array_size);
