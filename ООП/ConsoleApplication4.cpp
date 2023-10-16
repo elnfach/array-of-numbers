@@ -17,8 +17,7 @@ int main()
 	for (size_t i = 0; i < N; i++)
 	{
 		a.screen();
-		cout << " | ";
-		b.screen();
+		b.screen(" | ");
 		c = b;
 		b = a + b;
 		a = c;
@@ -26,5 +25,6 @@ int main()
 	cout << "\n";
 
 	cout << "Answer = ";
-	b.screen();
+	a.screen();
+	system("pause");
 }
