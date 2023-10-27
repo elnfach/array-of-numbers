@@ -3,12 +3,18 @@
 
 INT::INT()
 {
+	counter = 0;
+	count = 0;
+	count_buf = 0;
 	m_size = m_array_size - 1;
 	m_container = new unsigned char[m_array_size]();
 }
 
 INT::INT(INT* param)
 {
+	counter = 0;
+	count = 0;
+	count_buf = 0;
 	m_size = param->m_size;
 
 	delete[] m_container;
@@ -19,6 +25,9 @@ INT::INT(INT* param)
 
 INT::INT(const int param)
 {
+	counter = 0;
+	count = 0;
+	count_buf = 0;
 	int _param = param;
 	int buff = _param;
 	int size = 1;
@@ -94,7 +103,33 @@ INT INT::operator+(const INT& param)
 			}
 		}
 	}
+	counter += 1;
 	return temp;
+}
+
+bool INT::operator[](const int param)
+{
+	for (int i = m_array_size - 1; i >= m_size; i--)
+	{
+		if (m_container[i] == 0)
+		{
+			count += 1;
+			if (count > count_buf)
+			{
+				count_buf = count;
+				std::cout << "[" << count_buf << " - " << counter << "]";
+			}
+			if (count == param)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			count = 0;
+		}
+	}
+	return false;
 }
 
 void INT::operator=(const INT& param)

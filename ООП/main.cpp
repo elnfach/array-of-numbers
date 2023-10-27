@@ -14,17 +14,18 @@ int main()
 	cout << "Enter N: ";
 	cin >> N;
 
-	for (size_t i = 0; i < N; i++)
+	for (size_t i = 0;; i++)
 	{
-		a.screen();
-		b.screen(" | ");
 		c = b;
 		b = a + b;
 		a = c;
+		if (a[N ])
+		{
+			break;
+		}
 	}
 	cout << "\n";
 
 	cout << "Answer = ";
 	a.screen();
-	system("pause");
 }
