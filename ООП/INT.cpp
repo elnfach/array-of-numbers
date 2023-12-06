@@ -4,15 +4,18 @@
 INT::INT()
 {
 	m_size = m_array_size - 1;
-	m_container = new unsigned char[m_array_size]();
+	if (m_container != nullptr)
+		delete[m_array_size] m_container;
+	m_container = new char[m_array_size]();
 }
 
 INT::INT(INT& param)
 {
 	m_size = param.m_size;
 
-	delete[] m_container;
-	m_container = new unsigned char[m_array_size]();
+	if(m_container != nullptr)
+		delete[m_array_size] m_container;
+	m_container = new char[m_array_size]();
 
 	memcpy(m_container, param.m_container, m_array_size);
 }
@@ -21,14 +24,15 @@ INT::INT(const int param)
 {
 	int _param = param;
 
-	if(_param > 9)
-		throw ()
+	if (_param > 9)
+	{
+		std::cout << "Введено неверная цифра";
+		__debugbreak();
+	}
 
-	delete[m_array_size] this->m_container;
-	m_container = new unsigned char[m_array_size]();
-
-	m_size = m_array_size - size;
-	m_container = this->m_container;
+	if (m_container != nullptr)
+		delete[m_array_size] m_container;
+	m_container = new char[m_array_size]();
 }
 
 INT::~INT()
@@ -88,6 +92,6 @@ void INT::operator=(const INT& param)
 {
 	m_size = param.m_size;
 	delete[m_array_size] m_container;
-	m_container = new unsigned char[m_array_size];
+	m_container = new char[m_array_size];
 	memcpy(m_container, param.m_container, m_array_size);
 }

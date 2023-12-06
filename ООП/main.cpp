@@ -19,10 +19,6 @@ int main()
 		c = b;
 		b = a + b;
 		a = c;
-		if (a[N ])
-		{
-			break;
-		}
 	}
 	cout << "\n";
 

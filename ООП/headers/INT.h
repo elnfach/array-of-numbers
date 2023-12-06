@@ -19,7 +19,7 @@ public:
 private:
 	int m_size;
 	int m_array_size = 1000000;
-	unsigned char* m_container;
+	char* m_container;
 };
 
 #endif // !HEADERS_INT_H
